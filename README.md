@@ -20,16 +20,15 @@ OptiMask is a MetaMask-like environment that allows users to interact with the E
 ## Installation
 
 1. **Clone the repository**:
-   ```bash
+```
    git clone https://github.com/Fardeen26/OptiMask-Wallet.git
 ```
-
 ```
    cd OptiMask-Wallet
 ```
 
 2. **Install dependencies**:
-    ```
+```
     npm install
 ```
 
