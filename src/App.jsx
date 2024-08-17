@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import './App.css'
+import NavBar from './components/NavBar';
+import axios from 'axios';
+import PhraseBox from './components/PhraseBox';
+import WalletBox from './components/WalletBox';
+import './App.css';
 
 const App = () => {
   const [seedPhrase, setSeedPhrase] = useState('');
   const [wallets, setWallets] = useState([]);
-  const [currentWallet, setCurrentWallet] = useState(null);
+  const [selectedWalletIndex, setSelectedWalletIndex] = useState(0);
+  const [selectedWallet, setSelectedWallet] = useState({});
+  const [walletBalance, setWalletBalance] = useState(0);
 
   const generateSeedPhrase = () => {
     const mnemonic = ethers.Mnemonic.entropyToPhrase(ethers.randomBytes(16));
@@ -16,126 +22,108 @@ const App = () => {
     if (!seedPhrase) return;
     const hdNode = ethers.HDNodeWallet.fromPhrase(seedPhrase, `m/44'/60'/0'/0/${wallets.length}`);
 
-    setWallets([...wallets, hdNode]);
-    setCurrentWallet(hdNode);
+    const walletWithId = {
+      id: wallets.length + 1,
+      address: hdNode.address,
+      privateKey: hdNode.privateKey,
+      publicKey: hdNode.publicKey,
+      signingKey: hdNode.signingKey,
+      mnemonic: hdNode.mnemonic.phrase,
+      path: hdNode.path,
+    };
+
+    setSelectedWallet(hdNode);
+    const newWallets = [...wallets, walletWithId];
+    setWallets(newWallets);
+    setSelectedWalletIndex(newWallets.length - 1);
+
+    fetchBalance(walletWithId);
   };
 
-  const showPrivateKey = () => {
-    if (currentWallet) {
-      alert(`Private Key: ${currentWallet.privateKey}`);
+
+  const handleChange = (e) => {
+    const selectedIndex = parseInt(e.target.value, 10);
+    const selectedWallet = wallets[selectedIndex];
+    setSelectedWallet(selectedWallet);
+    setSelectedWalletIndex(selectedIndex);
+  };
+
+  const fetchBalance = async (wallet) => {
+    if (wallet) {
+      const response = await axios.post(import.meta.env.VITE_ALCHEMY_RPC_URL,
+        {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "method": "eth_getBalance",
+          "params": [wallet.address, "latest"]
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+
+      if (response.data) {
+        const hexValue = response.data.result;
+        let decimalValue = BigInt(hexValue).toString(10);
+        decimalValue /= 1e18;
+        if (decimalValue != 0) {
+          const formattedNumber = parseFloat(decimalValue).toFixed(4);
+          setWalletBalance(formattedNumber);
+        }
+
+      } else {
+        console.log('Error fetching balance');
+      }
     }
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (wallets.length > 0) {
+        fetchBalance(selectedWallet);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [selectedWallet, wallets.length]);
+
   return (
-    <>
+    <div className="root">
       <div className="main">
         <div className="gradient" />
       </div>
-      <div
-        style={{
-          padding: '20px',
-          width: '97vw',
-          height: '150vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          zIndex: 5
-        }}
-        className='main gradiant'
+      <NavBar />
+      <div className='main gradiant main-container'
       >
-        <div>
-          <h1>Ethereum Wallet Generator</h1>
-
-          {seedPhrase ? '' : (
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button onClick={generateSeedPhrase} style={{ marginBottom: '10px' }}>
-                Generate Seed Phrase
-              </button>
-            </div>
-          )}
+        <div className='container'>
+          <h1 className='heading'>Experiment with wallet creation and blockchain transactions in a hands-on learning environment</h1>
+          <div className={`${seedPhrase ? 'hidden' : 'block'}`}>
+            <button onClick={generateSeedPhrase} style={{ marginBottom: '10px' }} className='buttons'>
+              Generate Seed Phrase
+            </button>
+          </div>
 
           {seedPhrase && (
-            <p>
-              <strong>Seed Phrase:</strong> {seedPhrase}
-            </p>
-          )}
-
-          {seedPhrase ? (
-            <div className="details">
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button onClick={createWalletFromSeed} style={{ marginBottom: '10px' }}>
-                  {wallets.length ? `Add Account ${wallets.length + 1}` : 'Create Account'}
+            <>
+              <PhraseBox seedPhrase={seedPhrase} />
+              <div className='margin-top-15'>
+                <button onClick={createWalletFromSeed} className='buttons'>
+                  {wallets.length ? `Add Account` : 'Create a Wallet'}
                 </button>
               </div>
-
-              {currentWallet && (
-                <div>
-                  <p>
-                    <strong>Address:</strong> {currentWallet.address}
-                  </p>
-                  <p>
-                    <strong>Public Key:</strong> {currentWallet.publicKey}
-                  </p>
-                  <button onClick={showPrivateKey} style={{ marginBottom: '10px' }}>
-                    Show Private Key
-                  </button>
-                </div>
-              )}
-
-              {wallets.length ? (
-                <div className="">
-                  <h2>All Accounts</h2>
-                  <ul>
-                    {wallets.map((wallet, index) => (
-                      <li key={index}>
-                        <strong>Account {index + 1}:</strong> {wallet.publicKey}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : ''}
-
-            </div>
-          ) : (
-            ''
+            </>
           )}
+
+          {wallets.length > 0 && (
+            <WalletBox wallets={wallets} selectedWalletIndex={selectedWalletIndex} handleChange={handleChange} walletBalance={walletBalance} selectedWallet={selectedWallet} />
+          )}
+
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
 export default App;
-
-// SOLANA
-
-// import React, { useEffect } from 'react';
-// import nacl from 'tweetnacl';
-// import { generateMnemonic, mnemonicToSeedSync } from 'bip39';
-// import { derivePath } from 'ed25519-hd-key';
-// import { Keypair } from '@solana/web3.js';
-
-// const App = () => {
-
-//   useEffect(() => {
-//     const mnemonic = generateMnemonic();
-//     const seed = mnemonicToSeedSync(mnemonic);
-
-//     for (let i = 0; i < 4; i++) {
-//       const path = `m/44'/501'/${i}'/0'`; // This is the derivation path
-//       const derivedSeed = derivePath(path, seed.toString('hex')).key;
-//       const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
-//       console.log(Keypair.fromSecretKey(secret).publicKey.toBase58());
-//     }
-//   }, []);
-
-//   return (
-//     <div>
-//       <h2>Key Generation</h2>
-//       <p>Check the console for generated public keys.</p>
-//     </div>
-//   );
-// };
-
-// export default App;
-

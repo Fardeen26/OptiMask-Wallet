@@ -1,3 +1,7 @@
+.root {
+  width: 100vw;
+}
+
 .main::before {
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
   position: absolute;
@@ -44,14 +48,199 @@
   opacity: 0.20;
 }
 
+.main-container {
+  padding: 20px;
+  width: 100vw;
+  height: 150vh;
+  z-index: 5;
+}
+
 
 @media (max-width: 500px) {
   .details {
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     overflow: hidden;
     flex-direction: column;
     word-wrap: break-word;
   }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.heading {
+  width: 74vw;
+  text-align: center;
+  font-size: 50px;
+}
+
+.buttons {
+  background-color: rgb(109, 109, 255);
+  color: white;
+  padding: .5rem 1rem;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  transition: 0.5s;
+}
+
+.buttons:hover {
+  background-color: white;
+  color: black;
+}
+
+.hidden {
+  display: none !important;
+  transition: .5s;
+}
+
+.block {
+  display: block;
+  transition: .5s;
+}
+
+.phrase {
+  border: 1px solid white;
+  padding: 15px 25px;
+  font-size: 16px;
+  transition: 1s;
+  border-radius: 25px;
+  margin-bottom: 15px;
+}
+
+.hide-phrase {
+  margin-left: 35px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.copy-phrase {
+  margin-left: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account {
+  margin-top: 60px;
+  border: 1px solid white;
+  width: 400px;
+  height: 500px;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 25px;
+}
+
+.account-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.address p {
+  font-size: 13px;
+  margin-top: 1px !important;
+}
+
+.account-button {
+  background-color: #fff;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+.trans-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.eth-amount {
+  font-size: 25px;
+  margin-top: -20px;
+}
+
+.send-buttons {
+  display: flex;
+  margin-top: -5px;
+}
+
+.send-button {
+  background-color: rgb(109, 109, 255);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  width: 100px !important;
+  padding: 5px;
+  font-weight: 600;
+  transition: 0.5s;
+}
+
+.send-button:hover {
+  background-color: rgb(85, 85, 255);
+}
+
+select {
+  appearance: none;
+  border: 0;
+  outline: 0;
+  background: white;
+  color: black;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  width: min(20rem, 90vw);
+  background: var(--background-select);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.select select {
+  flex: 1;
+  padding: .7em 1em;
+  cursor: pointer;
+}
+
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  right: 1rem;
+  top: .5rem;
+  transition: 0.5s all ease;
+  pointer-events: none;
+  color: black;
+  font-size: 10px;
+}
+
+.select:hover::after {
+  color: rgb(109, 109, 255);
+}
+
+.margin-top-15 {
+  margin-top: 15px;
 }

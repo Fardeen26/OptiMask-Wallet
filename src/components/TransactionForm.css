@@ -1,0 +1,28 @@
+.trans-form {
+    width: 300px;
+}
+
+.tarns-input {
+    padding: 8px;
+    margin: 5px 0;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+}
+
+.trans-button {
+    background-color: rgb(109, 109, 255);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 6px;
+    margin-top: 10px;
+    transition: .5s;
+}
+
+.trans-button:hover {
+    background-color: rgb(85, 85, 255);
+}
