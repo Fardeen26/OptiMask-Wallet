@@ -59,7 +59,3 @@ npm run dev
 ## Acknowledgments
 - **ethers.js**: For providing an easy-to-use library for interacting with the Ethereum blockchain.
 - **Alchemy**: For offering a reliable API to access blockchain data.
-
-***
-
-This `README.md` provides a clear and professional overview of the OptiMask project. Feel free to customize it further according to your specific needs!
