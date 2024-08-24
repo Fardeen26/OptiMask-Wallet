@@ -12,6 +12,7 @@ const App = () => {
   const [selectedWalletIndex, setSelectedWalletIndex] = useState(0);
   const [selectedWallet, setSelectedWallet] = useState({});
   const [walletBalance, setWalletBalance] = useState(0);
+  const [isTransactionForm, setIsTransactionForm] = useState(false)
 
   const generateSeedPhrase = () => {
     const mnemonic = ethers.Mnemonic.entropyToPhrase(ethers.randomBytes(16));
@@ -36,6 +37,7 @@ const App = () => {
     const newWallets = [...wallets, walletWithId];
     setWallets(newWallets);
     setSelectedWalletIndex(newWallets.length - 1);
+    setIsTransactionForm(false)
 
     fetchBalance(walletWithId);
   };
@@ -46,6 +48,7 @@ const App = () => {
     const selectedWallet = wallets[selectedIndex];
     setSelectedWallet(selectedWallet);
     setSelectedWalletIndex(selectedIndex);
+    setIsTransactionForm(false)
   };
 
   const fetchBalance = async (wallet) => {
@@ -84,7 +87,7 @@ const App = () => {
       if (wallets.length > 0) {
         fetchBalance(selectedWallet);
       }
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [selectedWallet, wallets.length]);
@@ -117,7 +120,7 @@ const App = () => {
           )}
 
           {wallets.length > 0 && (
-            <WalletBox wallets={wallets} selectedWalletIndex={selectedWalletIndex} handleChange={handleChange} walletBalance={walletBalance} selectedWallet={selectedWallet} />
+            <WalletBox wallets={wallets} selectedWalletIndex={selectedWalletIndex} handleChange={handleChange} walletBalance={walletBalance} selectedWallet={selectedWallet} isTransactionForm={isTransactionForm} setIsTransactionForm={setIsTransactionForm} />
           )}
 
         </div>

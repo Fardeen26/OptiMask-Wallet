@@ -1,14 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
 import TransactionForm from './TransactionForm'
 
-const WalletBox = ({ wallets, selectedWalletIndex, handleChange, walletBalance, selectedWallet }) => {
-    const [isTransactionForm, setIsTransactionForm] = useState(false)
-
+const WalletBox = ({ wallets, selectedWalletIndex, handleChange, walletBalance, selectedWallet, isTransactionForm, setIsTransactionForm }) => {
     const handleTransaction = () => {
         setIsTransactionForm(true)
     }
-
 
     return (
         <div className='account'>
