@@ -11,7 +11,7 @@ const App = () => {
   const [wallets, setWallets] = useState([]);
   const [selectedWalletIndex, setSelectedWalletIndex] = useState(0);
   const [selectedWallet, setSelectedWallet] = useState({});
-  const [walletBalance, setWalletBalance] = useState(0);
+  const [walletBalance, setWalletBalance] = useState();
   const [isTransactionForm, setIsTransactionForm] = useState(false)
 
   const generateSeedPhrase = () => {
@@ -74,6 +74,8 @@ const App = () => {
         if (decimalValue != 0) {
           const formattedNumber = parseFloat(decimalValue).toFixed(4);
           setWalletBalance(formattedNumber);
+        } else {
+          setWalletBalance(decimalValue);
         }
 
       } else {
@@ -109,14 +111,14 @@ const App = () => {
           </div>
 
           {seedPhrase && (
-            <>
+            <div className='phrase-container'>
               <PhraseBox seedPhrase={seedPhrase} />
               <div className='margin-top-15'>
                 <button onClick={createWalletFromSeed} className='buttons'>
                   {wallets.length ? `Add Account` : 'Create a Wallet'}
                 </button>
               </div>
-            </>
+            </div>
           )}
 
           {wallets.length > 0 && (

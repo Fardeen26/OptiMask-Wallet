@@ -254,3 +254,9 @@ select::-ms-expand {
 .margin-top-15 {
   margin-top: 15px;
 }
+
+.phrase-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -20,9 +20,6 @@ const TransactionForm = ({ selectedWallet, walletBalance }) => {
             const transaction = {
                 to: recipient,
                 value: ethers.parseUnits(amount, 'ether'),
-                // gasLimit: ethers.BigNumber.from("21000"), // Standard gas limit for a simple transaction
-                // maxFeePerGas: ethers.BigNumber.from("1000000000"), // Gas price (in wei)
-                // maxPriorityFeePerGas: ethers.BigNumber.from("1000000000"), // Priority fee (in wei)
             };
 
 
