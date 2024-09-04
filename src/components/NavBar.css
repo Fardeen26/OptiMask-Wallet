@@ -21,6 +21,5 @@ nav button {
 }
 
 nav button:hover {
-    background-color: white;
-    color: black;
+    background-color: black;
 }

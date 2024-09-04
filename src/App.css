@@ -98,8 +98,7 @@
 }
 
 .buttons:hover {
-  background-color: white;
-  color: black;
+  background-color: black;
 }
 
 .hidden {
@@ -113,7 +112,7 @@
 }
 
 .phrase {
-  border: 1px solid white;
+  border: 1px solid black;
   padding: 15px 25px;
   font-size: 16px;
   transition: 1s;
@@ -147,7 +146,7 @@
 
 @media (prefers-color-scheme: dark) {
   .account {
-    border: 1px solid white;
+    border: 1px solid black;
   }
 
   select {
@@ -203,7 +202,7 @@
 }
 
 .send-button:hover {
-  background-color: rgb(85, 85, 255);
+  background-color: black;
 }
 
 select {
